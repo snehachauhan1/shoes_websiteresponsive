@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .form-container h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            color: #333;
+        }
+        .form-group textarea {
+            resize: none;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .form-group button:hover {
+            background-color: #218838;
+        }
+        .form-group .success-message {
+            color: green;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Purchase Form</h2>
+    <form id="purchaseForm">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required>
+        </div>
+
+        <div class="form-group">
+            <label for="address">Shipping Address:</label>
+            <textarea id="address" name="address" rows="3" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="shoeModel">Shoe Model:</label>
+            <select id="shoeModel" name="shoeModel" required>
+                <option value="Air Force">Air Force</option>
+                <option value="Jordan">Jordan</option>
+                <option value="Blazer">Blazer</option>
+                <option value="Crater">Crater</option>
+                <option value="Hippie">Hippie</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="shoeSize">Shoe Size:</label>
+            <input type="number" id="shoeSize" name="shoeSize" required>
+        </div>
+
+        <div class="form-group">
+            <label for="shoeColor">Shoe Color:</label>
+            <input type="text" id="shoeColor" name="shoeColor" required>
+        </div>
+
+        <div class="form-group">
+            <button type="submit">Submit Order</button>
+        </div>
+        <div class="form-group">
+            <p id="successMessage" class="success-message"></p>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.getElementById("purchaseForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const phone = document.getElementById("phone").value;
+        const address = document.getElementById("address").value;
+        const shoeModel = document.getElementById("shoeModel").value;
+        const shoeSize = document.getElementById("shoeSize").value;
+        const shoeColor = document.getElementById("shoeColor").value;
+
+        const orderData = { name, email, phone, address, shoeModel, shoeSize, shoeColor };
+
+        fetch('/submit-order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(orderData)
+        })
+        .then(response => response.text())
+        .then(data => {
+            const successMessage = document.getElementById("successMessage");
+            successMessage.textContent = data;
+            document.getElementById("purchaseForm").reset();
+        })
+        .catch(error => console.error('Error:', error));
+    });
+</script>
+
+
+</body>
+</html>
